@@ -5,11 +5,11 @@
 -------
 ## Datasets
 
-### https://www.bbci.de/competition/iv/#datasets
+### BCI Competition IV: https://www.bbci.de/competition/iv/#datasets
 - BCI Competition IV Dataset IIa
 - BCI Competition IV Dataset I
 
-### https://www.bbci.de/competition/iii/
+### BCI Competition III https://www.bbci.de/competition/iii/
 - BCI Competition III Dataset IVa
 
 -------
