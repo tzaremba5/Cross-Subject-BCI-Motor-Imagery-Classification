@@ -18,12 +18,17 @@ The source code in src contains the following
 ### BCI Competition III https://www.bbci.de/competition/iii/
 - BCI Competition III Dataset IVa
 
+
 -------
-## Requirements
+## Feature Generation
 
 
 -------
 ## Model
+
+
+-------
+## Requirements
 
 
 -------
