@@ -11,10 +11,15 @@
 import argparse
 import os
 
+
+def preprocess_pipeline(raw_EEG):
+
+
 # load_BCI_Competition_IV_Dataset_IIa
 #
-# Loads in the data, prepreprocesses, and saves it to the outpath
-# Input: IV_IIa_path, IV_IIa_path
+# Loads in the data, prepreprocesses and saves it to out_path
+# Input: IV_IIa_path, out_path
+# Output: None
 #
 def load_BCI_Competition_IV_Dataset_IIa(IV_IIa_path, out_path):
 	print(IV_IIa_path)
@@ -22,12 +27,18 @@ def load_BCI_Competition_IV_Dataset_IIa(IV_IIa_path, out_path):
 
 # load_BCI_Competition_IV_Dataset_I
 #
+# Loads in the data, prepreprocesses and saves it to out_path
+# Input: IV_I_path, out_path
+# Output: None
 #
 def load_BCI_Competition_IV_Dataset_I(IV_I_path, out_path):
 	print(IV_I_path)
 
-# load_BCI_Competition_IV_Dataset_IIa(
+# load_BCI_Competition_IV_Dataset_IIa
 #
+# Loads in the data, prepreprocesses and saves it to out_path
+# Input: III_IVa_path, out_path
+# Output: None
 #
 def load_BCI_Competition_III_Dataset_IVa(III_IVa_path, out_path):
 	print(III_IVa_path)
