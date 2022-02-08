@@ -1,5 +1,5 @@
 ######################################################################
-# build_features.py
+# load_data.py
 #
 # Loads in the data from BCI Competition IV Dataset IIa, BCI 
 # Competition IV Dataset I, and BCI Competition III Dataset IVa
@@ -11,9 +11,50 @@
 import argparse
 import os
 
-
+# preprocess_pipeline
+#
+# Preprocesses the EEG data by
+# - picking the 21 common channels
+# - downsamples to 250 Hz
+# - common average referencing
+# - surface laplacian
+# - bandpass filter (0.5 - 100 Hz)
+# - segment the data into epochs
+#
+# Input: MNE Raw Object
+# Output: MNE Epochs Object
+#
 def preprocess_pipeline(raw_EEG):
 
+	# Picks 21 Common Channels
+	raw.pick_channels(['Fz', 'FC3', 'FC1', 'FCz', 'FC2', 'FC4', 'C5',
+		'C3', 'C1', 'Cz', 'C2', 'C4', 'C6', 'CP3', 'CP1', 'CPz', 
+		'CP2', 'CP4', 'P1', 'Pz', 'P2'], ordered = True)
+
+	# Downsamples to 250 Hz
+	raw_data.resample(250)
+
+	# Common average referencing
+	mne.set_eeg_reference(raw_data, ref_channels='average', 
+		copy = False)
+
+	# Surface Laplacian Filter
+	raw_data.set_montage('standard_1020')
+	mne.preprocessing.compute_current_source_density(raw_data,
+		sphere='auto', lambda2=1e-05, stiffness=4,
+		n_legendre_terms=50, copy=False)
+
+	# Bandpass filter between .5 Hz and 100 Hz 
+	raw_data.filter(.5, 100., fir_window='hamming')
+
+	# Segment data into epochs
+	all_events, all_event_id = mne.events_from_annotations(raw_data)
+	epochs = mne.Epochs(raw = raw_data, 
+		tmin = 0, tmax= 3.5, events = all_events, event_id=event_dict, 
+		event_repeated = 'merge', baseline = (None, None), 
+		preload = True)
+
+	return epochs
 
 # load_BCI_Competition_IV_Dataset_IIa
 #
