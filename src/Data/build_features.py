@@ -85,8 +85,6 @@ def load_competition(competition):
 			STFT_file = open(out_path_task, 'wb')
 			pickle.dump(STFT, STFT_file)
 
-
-
 if __name__ == '__main__':
 
 	for competition in ['IV_IIa', 'IV_I', 'III_IVa']:
