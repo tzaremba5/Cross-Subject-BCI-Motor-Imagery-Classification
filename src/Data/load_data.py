@@ -81,7 +81,7 @@ def save_subject_epochs(epochs, path):
 # Input: IV_IIa_path, out_path
 # Output: None
 #
-def load_BCI_Competition_IV_Dataset_IIa(IV_IIa_path, out_path):
+def load_BCI_Competition_IV_Dataset_IIa(IV_IIa_path, out_path_dir):
 	# Makes the directory to store the epochs
 	try:
 		os.makedirs(out_path)
@@ -137,7 +137,7 @@ def load_BCI_Competition_IV_Dataset_IIa(IV_IIa_path, out_path):
 # Input: IV_I_path, out_path
 # Output: None
 #
-def load_BCI_Competition_IV_Dataset_I(IV_I_path, out_path):
+def load_BCI_Competition_IV_Dataset_I(IV_I_path, out_path_dir):
 	# Makes the directory to store the epochs
 	try:
 		os.makedirs(out_path)
@@ -200,7 +200,8 @@ def load_BCI_Competition_IV_Dataset_I(IV_I_path, out_path):
 # Input: III_IVa_path, out_path
 # Output: None
 #
-def load_BCI_Competition_III_Dataset_IVa(III_IVa_path, out_path):
+def load_BCI_Competition_III_Dataset_IVa(III_IVa_path, out_path_dir):
+
 	# Makes the directory to store the epochs
 	try:
 		os.makedirs(out_path)
@@ -250,16 +251,15 @@ if __name__ == '__main__':
 
 	# Sets the out_path to store all the preprocessed data
 	cwd = os.getcwd()
-	out_path = os.path.join(cwd, '{}')
+	out_path_dir = os.path.join(cwd, 'epochs', '{}')
 
 	# Loads all the competition data, stores the preprocessed data
 	if args.IV_IIa_path[0] != '$':
 		load_BCI_Competition_IV_Dataset_IIa(args.IV_IIa_path[0],
-			out_path.format(competition = "IV_IIa"))
+			out_path_dir.format(competition = "IV_IIa"))
 	if args.IV_I_path[0] != '$':	
 		load_BCI_Competition_IV_Dataset_I(args.IV_I_path[0],
-			out_path.format(competition = "IV_I"))
+			out_path_dir.format(competition = "IV_I"))
 	if args.III_IVa_path[0] != '$':
 		load_BCI_Competition_III_Dataset_IVa(args.III_IVa_path[0],
-			out_path.format(competition = "III_IVa"))
-
+			out_path_dir.format(competition = "III_IVa"))

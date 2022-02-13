@@ -89,20 +89,3 @@ if __name__ == '__main__':
 
 	for competition in ['IV_IIa', 'IV_I', 'III_IVa']:
 		load_competition(competition)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
