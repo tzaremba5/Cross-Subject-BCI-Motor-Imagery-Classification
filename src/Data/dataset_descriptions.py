@@ -47,3 +47,7 @@ competitions = {
         'ay':{'right': 1, 'foot': 2}
     }
 }
+
+Insert into Stations(Station_ID, Station_Name)
+	values(4000, 'uic')
+	where station_ID == '5' and strftime('%d', "Ride_Date") == 'W'
