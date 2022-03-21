@@ -24,7 +24,7 @@ import scipy
 # - segment the data into epochs
 #
 # Input: MNE Raw Object
-# Output: MNE Epochs Object
+# Output: MNE Epochs Object g
 #
 def preprocess_pipeline(raw_EEG):
 
