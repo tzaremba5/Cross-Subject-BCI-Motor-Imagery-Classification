@@ -7,11 +7,15 @@
 # WARNING: this file will save the preprocessed EEG data
 #
 
+# TO DO, Get rid of cwd
+
 # Imports
 import argparse
 import os
 import mne
-import scipy
+import scipy.io
+import numpy as np
+from dataset_descriptions import *
 
 # preprocess_pipeline
 #
@@ -26,54 +30,33 @@ import scipy
 # Input: MNE Raw Object
 # Output: MNE Epochs Object g
 #
-def preprocess_pipeline(raw_EEG):
+def preprocess_pipeline(raw_EEG, event_dict):
 
 	# Picks 21 Common Channels
-	raw.pick_channels(['Fz', 'FC3', 'FC1', 'FCz', 'FC2', 'FC4', 'C5', 'C3',
+	raw_EEG.pick_channels(['Fz', 'FC3', 'FC1', 'FCz', 'FC2', 'FC4', 'C5', 'C3',
 		'C1', 'Cz', 'C2', 'C4', 'C6', 'CP3', 'CP1', 'CPz', 'CP2', 'CP4',
 		'P1', 'Pz', 'P2'], ordered = True)
 
 	# Downsamples to 250 Hz
-	raw_data.resample(250)
+	raw_EEG.resample(250)
 
 	# Common average referencing
-	mne.set_eeg_reference(raw_data, ref_channels='average', copy = False)
+	mne.set_eeg_reference(raw_EEG, ref_channels='average', copy = False)
 
 	# Surface Laplacian Filter
-	raw_data.set_montage('standard_1020')
-	mne.preprocessing.compute_current_source_density(raw_data, sphere='auto',
+	raw_EEG.set_montage('standard_1020')
+	mne.preprocessing.compute_current_source_density(raw_EEG, sphere='auto',
 		lambda2=1e-05, stiffness=4, n_legendre_terms=50, copy=False)
 
 	# Bandpass filter between .5 Hz and 100 Hz 
-	raw_data.filter(.5, 100., fir_window='hamming')
+	raw_EEG.filter(.5, 100., fir_window='hamming')
 
 	# Segment data into epochs
-	all_events, all_event_id = mne.events_from_annotations(raw_data)
-	epochs = mne.Epochs(raw = raw_data, tmin = 0, tmax= 3.5, events = all_events,
-		event_id=event_dict, event_repeated = 'merge', baseline = (None, None), 
-		preload = True)
+	all_events, all_event_id = mne.events_from_annotations(raw_EEG)
+	epochs = mne.Epochs(raw = raw_EEG, tmin = 0, tmax= 3.5, events = all_events,
+		event_id=event_dict, event_repeated = 'merge', baseline = (None, None))
 
 	return epochs
-
-# save_subject_epochs
-# 
-# Stores the epochs for a subject
-#
-# Input: MNE Epochs Object, Path to store the epochs
-# Output: None
-#
-def save_subject_epochs(epochs, path):
-
-	# Clears any previous epochs
-	try:
-		os.remove(out_path_subject)
-	except:
-		pass
-
-	# Creates and fills file to store epochs
-	outfile = open(out_path_subject, 'wb')
-	pickle.dump(epochs, outfile)
-	outfile.close()
 
 # load_BCI_Competition_IV_Dataset_IIa
 #
@@ -84,18 +67,17 @@ def save_subject_epochs(epochs, path):
 def load_BCI_Competition_IV_Dataset_IIa(IV_IIa_path, out_path_dir):
 	# Makes the directory to store the epochs
 	try:
-		os.makedirs(out_path)
+		os.makedirs(out_path_dir)
 	except:
+
 		pass
 
 	for subject in competitions['IV_IIa']['subjects']:
 
 		# Loads in a subject's data and their labels
-		raw = mne.io.read_raw_gdf(os.path.join(IV_IIa_path, f'{subject}T.gdf',
-		 preload = True))
-		raw_E = mne.io.read_raw_gdf(os.path.join(IV_IIa_path, f'{subject}E.gdf',
-		 preload = True))
-		labels = scipy.io.loadmat(os.path.join(IV_IIa_path, f'{subject}E.mat'))
+		raw = mne.io.read_raw_gdf(f'{IV_IIa_path}/{subject}T.gdf')
+		raw_E = mne.io.read_raw_gdf(f'{IV_IIa_path}/{subject}E.gdf')
+		labels = scipy.io.loadmat(f'{IV_IIa_path}/{subject}E.mat')
 
 		# Labels the eval data
 		eval_description = raw_E.annotations.description
@@ -125,11 +107,11 @@ def load_BCI_Competition_IV_Dataset_IIa(IV_IIa_path, out_path_dir):
 			allow_duplicates=False, verbose=None)
 
 		# Preprocesses the raw data
-		epochs = preprocess_pipeline(raw_EEG = raw)
+		epochs = preprocess_pipeline(raw_EEG = raw, event_dict = competitions['IV_IIa'][subject])
 
 		# Saves the epochs
-		out_path_subject = os.path.join(out_path, f'{subject}.pk1')
-		save_subject_epochs(epochs, out_path_subject)
+		out_path_subject = f'{out_path_dir}/{subject}.fif'
+		epochs.save(fname = out_path_subject, overwrite = True)
 
 # load_BCI_Competition_IV_Dataset_I
 #
@@ -140,19 +122,16 @@ def load_BCI_Competition_IV_Dataset_IIa(IV_IIa_path, out_path_dir):
 def load_BCI_Competition_IV_Dataset_I(IV_I_path, out_path_dir):
 	# Makes the directory to store the epochs
 	try:
-		os.makedirs(out_path)
+		os.makedirs(out_path_dir)
 	except:
 		pass
 
 	for subject in competitions['IV_I']['subjects']:
 
 		# Loads in a subject's data and their labels
-		data = scipy.loadmat(os.path.join(folder,
-			f'BCICIV_calib_ds1{subject}_1000Hz'))
-		eval_data = scipy.loadmat(os.path.join(folder, 
-			f'BCICIV_eval_ds1{subject}_1000Hz.mat'))
-		labels = scipy.loadmat(os.path.join(folder,
-			f'BCICIV_eval_ds1{subject}_1000Hz_true_y.mat'))
+		data = scipy.io.loadmat(f'{IV_I_path}/BCICIV_calib_ds1{subject}_1000Hz')
+		eval_data = scipy.io.loadmat(f'{IV_I_path}/BCICIV_eval_ds1{subject}_1000Hz.mat')
+		labels = scipy.io.loadmat(f'{IV_I_path}/BCICIV_eval_ds1{subject}_1000Hz_true_y.mat')
 
 		# creates the raw objects
 		info = mne.create_info(ch_names = [ch_name[0] for ch_name in data['nfo']['clab'][0][0][0]],
@@ -188,11 +167,11 @@ def load_BCI_Competition_IV_Dataset_I(IV_I_path, out_path_dir):
 		raw.append(raw_E)
 
 		# Preprocesses the raw data
-		epochs = preprocess_pipeline(raw_EEG = raw)
+		epochs = preprocess_pipeline(raw_EEG = raw, event_dict = competitions['IV_I'][subject])
 
 		# Saves the epochs
-		out_path_subject = os.path.join(out_path, f'{subject}.pk1')
-		save_subject_epochs(epochs, out_path_subject)
+		out_path_subject = f'{out_path_dir}/{subject}.fif'
+		epochs.save(fname = out_path_subject, overwrite = True)
 
 # load_BCI_Competition_IV_Dataset_IIa
 #
@@ -201,20 +180,17 @@ def load_BCI_Competition_IV_Dataset_I(IV_I_path, out_path_dir):
 # Output: None
 #
 def load_BCI_Competition_III_Dataset_IVa(III_IVa_path, out_path_dir):
-
 	# Makes the directory to store the epochs
 	try:
-		os.makedirs(out_path)
+		os.makedirs(out_path_dir)
 	except:
 		pass
 
 	for subject in competitions['III_IVa']['subjects']:
 
 		# Loads in a subject's data and their labels
-		data = scipy.io.loadmat(os.path.join(folder, 
-			f'data_set_IVa_a{subject}.mat'))
-		labels = scipy.io.loadmat(os.path.join(folder, 
-			f'true_labels_a{subject}.mat'))
+		data = scipy.io.loadmat(f'{III_IVa_path}/data_set_IVa_{subject}.mat')
+		labels = scipy.io.loadmat(f'{III_IVa_path}/true_labels_{subject}.mat')
 
 		# Creates the raw object 
 		info = mne.create_info(ch_names = [ch_name[0] for ch_name in data['nfo']['clab'][0][0][0]],
@@ -230,36 +206,30 @@ def load_BCI_Competition_III_Dataset_IVa(III_IVa_path, out_path_dir):
 			description = description)
 
 		# Preprocesses the raw data
-		epochs = preprocess_pipeline(raw_EEG = raw)
+		epochs = preprocess_pipeline(raw_EEG = raw, event_dict = competitions['III_IVa'][subject])
 
 		# Saves the epochs
-		out_path_subject = os.path.join(out_path, f'{subject}.pk1')
-		save_subject_epochs(epochs, out_path_subject)
+		out_path_subject = f'{out_path_dir}/{subject}.fif'
+		epochs.save(fname = out_path_subject, overwrite = True)
 
 if __name__ == '__main__':
 
 	# Gets the name of the directories to load the raw data 
 	# and save the preprocessed data
 	parser = argparse.ArgumentParser(description='Load Data')
-	parser.add_argument('IV_IIa_path', nargs = 1,
-		help='BCI Competition IV Dataset IIa raw path or $ to skip')
-	parser.add_argument('IV_I_path', nargs = 1, 
-		help='BCI Competition IV Dataset I raw path or $ to skip')
-	parser.add_argument('III_IVa_path', nargs = 1,
-	 help='BCI Competition III Dataset IVa raw path or $ to skip')
+	parser.add_argument('IV_IIa_path', nargs = 1, help='BCI Competition IV Dataset IIa raw path or $ to skip')
+	parser.add_argument('IV_I_path', nargs = 1, help='BCI Competition IV Dataset I raw path or $ to skip')
+	parser.add_argument('III_IVa_path', nargs = 1,help='BCI Competition III Dataset IVa raw path or $ to skip')
 	args = parser.parse_args()
 
 	# Sets the out_path to store all the preprocessed data
 	cwd = os.getcwd()
-	out_path_dir = os.path.join(cwd, 'epochs', '{}')
+	out_path_dir = f'{cwd}/epochs/'
 
 	# Loads all the competition data, stores the preprocessed data
 	if args.IV_IIa_path[0] != '$':
-		load_BCI_Competition_IV_Dataset_IIa(args.IV_IIa_path[0],
-			out_path_dir.format(competition = "IV_IIa"))
+		load_BCI_Competition_IV_Dataset_IIa(f'{cwd}/{args.IV_IIa_path[0]}', out_path_dir + 'IV_IIa')
 	if args.IV_I_path[0] != '$':	
-		load_BCI_Competition_IV_Dataset_I(args.IV_I_path[0],
-			out_path_dir.format(competition = "IV_I"))
+		load_BCI_Competition_IV_Dataset_I(f'{cwd}/{args.IV_I_path[0]}', out_path_dir + 'IV_I')
 	if args.III_IVa_path[0] != '$':
-		load_BCI_Competition_III_Dataset_IVa(args.III_IVa_path[0],
-			out_path_dir.format(competition = "III_IVa"))
+		load_BCI_Competition_III_Dataset_IVa(f'{cwd}/{args.III_IVa_path[0]}', out_path_dir + 'III_IVa')

@@ -8,10 +8,11 @@
 
 # Imports
 import os
-import pickle
 import numpy as np
-import scipy
+import pickle
+import scipy.signal
 import mne
+from dataset_descriptions import *
 
 # STFT_stacked
 #
@@ -47,21 +48,18 @@ def STFT_stacked(epochs):
 #
 def load_competition(competition):
 
-	cwd = os.getcwd()
-
 	for subject in competitions[competition]['subjects']:
 
 		# Makes the directory to store the features
-		out_path_dir = os.path.join(cwd, 'features', competition, subject)
+		out_path_dir = f'./features/{competition}/{subject}'
 		try:
 			os.makedirs(out_path_dir)
 		except:
 			pass
 
 		# Loads in the epochs
-		epochs_path = os.path.join(cwd, 'epochs', f'{competition}', f'{subject}.pk1')
-		infile = open(epochs_path, 'rb')
-		epochs = pickle.load(infile)
+		epochs_path = f'./epochs/{competition}/{subject}.fif'
+		epochs = mne.read_epochs(fname = epochs_path, preload = True)
 
 		# Picks the 12 channels for MI classification
 		twelve_channels = ['C1','C2','C3','C4','C5','C6','CP3','CP4',
@@ -71,9 +69,9 @@ def load_competition(competition):
 		# Generates the STFT representations
 		for task in epochs.event_id.keys():
 			epochs_task = epochs[task].get_data()
-			STFT = STFT_Stacked(epochs_task)
+			STFT = STFT_stacked(epochs_task)
 
-			out_path_task = os.path.join(out_path_dir, f'{task}.pk1')
+			out_path_task = f'{out_path_dir}/{task}.pk1'
 
 			# Removes all representation data from previous runs
 			try:
@@ -81,7 +79,7 @@ def load_competition(competition):
 			except:
 				pass
 
-			# Saves them
+			# Saves the features
 			STFT_file = open(out_path_task, 'wb')
 			pickle.dump(STFT, STFT_file)
 
