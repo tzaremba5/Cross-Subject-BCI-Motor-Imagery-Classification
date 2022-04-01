@@ -115,6 +115,4 @@ def create_dataset_CSCD(competition, subject):
     for class_number in range(num_classes):
         class_weights[class_number] = len(Y_other) / Y_other.count(class_number)
 
-    print(class_weights)
-
     return X_main, Y_main, X_other, Y_other, num_classes, class_weights

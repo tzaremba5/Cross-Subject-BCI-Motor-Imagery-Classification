@@ -7,8 +7,6 @@
 # WARNING: this file will save the preprocessed EEG data
 #
 
-# TO DO, Get rid of cwd
-
 # Imports
 import argparse
 import os
@@ -222,14 +220,10 @@ if __name__ == '__main__':
 	parser.add_argument('III_IVa_path', nargs = 1,help='BCI Competition III Dataset IVa raw path or $ to skip')
 	args = parser.parse_args()
 
-	# Sets the out_path to store all the preprocessed data
-	cwd = os.getcwd()
-	out_path_dir = f'{cwd}/epochs/'
-
 	# Loads all the competition data, stores the preprocessed data
 	if args.IV_IIa_path[0] != '$':
-		load_BCI_Competition_IV_Dataset_IIa(f'{cwd}/{args.IV_IIa_path[0]}', out_path_dir + 'IV_IIa')
+		load_BCI_Competition_IV_Dataset_IIa(f'./{args.IV_IIa_path[0]}', './epochs/IV_IIa')
 	if args.IV_I_path[0] != '$':	
-		load_BCI_Competition_IV_Dataset_I(f'{cwd}/{args.IV_I_path[0]}', out_path_dir + 'IV_I')
+		load_BCI_Competition_IV_Dataset_I(f'./{args.IV_I_path[0]}', './epochs/IV_I')
 	if args.III_IVa_path[0] != '$':
-		load_BCI_Competition_III_Dataset_IVa(f'{cwd}/{args.III_IVa_path[0]}', out_path_dir + 'III_IVa')
+		load_BCI_Competition_III_Dataset_IVa(f'./{args.III_IVa_path[0]}', './epochs/III_IVa')

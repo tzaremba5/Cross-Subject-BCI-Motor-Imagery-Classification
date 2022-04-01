@@ -1,6 +1,6 @@
 {
     "patience": 50,
-    "epochs": 1,
+    "epochs": 1000,
     "batch_size": 50
 }
 

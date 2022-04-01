@@ -21,10 +21,10 @@ from create_datasets import *
 #
 # Runs 3 iterations of a 5-fold cross validation for each subject
 # 
-def single_trial(X, Y, num_classes, model_config, train_config):
+def single_trial(X, Y, num_classes, model_config, train_config, weights_initial_path):
 	es = keras.callbacks.EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=train_config['patience'])
 	model = STFTModel(num_classes, **model_config)
-	model.save_weights('./checkpoints/single-trial_initial_checkpoint') # Saves the empty weights rigth after the models created
+	model.save_weights(weights_initial_path) # Saves the empty weights rigth after the models created
 
 	indices = []
 	predictions = []
@@ -34,7 +34,7 @@ def single_trial(X, Y, num_classes, model_config, train_config):
 		sss.get_n_splits(X, Y)
 
 		for train_index, test_index in sss.split(X, Y): # gets the train and test indecies
-			model.load_weights('./checkpoints/single-trial_initial_checkpoint') # Restores the model to the inital weights
+			model.load_weights(weights_initial_path) # Restores the model to the inital weights
 
 			train_index.astype(int, copy = False)
 			test_index.astype(int, copy = False)
@@ -47,9 +47,9 @@ def single_trial(X, Y, num_classes, model_config, train_config):
 			fold_predictions = model.predict(X_test)
 
 			# saves the predictions
-			indices += X_test.tolist()
-			predictions += fold_predictions.tolist()
-			labels += y_test.tolist()
+			indices.append(X_test.tolist())
+			predictions.append(fold_predictions.tolist())
+			labels.append(y_test.tolist())
 
 	r = results(predictions, labels, indices, model_config, train_config)
 	return r
@@ -94,7 +94,8 @@ if __name__ == '__main__':
 	X = np.array(X)
 	Y = np.array(Y)
 
-	results = single_trial(X, Y, num_classes, model_config, train_config)
+	weights_initial_path = f'./checkpoints/{competition}_{subject}_single-trial_initial_checkpoint'
+	results = single_trial(X, Y, num_classes, model_config, train_config, weights_initial_path)
 
 	#########################################
 	# Saves the results

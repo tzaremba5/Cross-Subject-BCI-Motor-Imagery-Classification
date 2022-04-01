@@ -56,7 +56,7 @@ if __name__ == '__main__':
 	Y_other = np.array(Y_other)
 
 	############## Collects the results ##############
-	weights_initial_path = './checkpoints/CSWD_initial_checkpoint'
+	weights_initial_path = f'./checkpoints/{competition}_{subject}_CSCD_initial_checkpoint'
 	results_zero, results_fifty = Cross_Subject(X_main, Y_main, X_other, Y_other, num_classes,
     class_weights, weights_initial_path, model_config, train_config)
 
@@ -70,5 +70,5 @@ if __name__ == '__main__':
 	with open(f'{results_path}/results_zero_{config_label}.pk1', 'wb') as results_file_zero:
 		pickle.dump(results_zero, results_file_zero)
 
-	with open(f'{results_path}/results_fifty{config_label}.pk1', 'wb') as results_file_fifty:
+	with open(f'{results_path}/results_fifty_{config_label}.pk1', 'wb') as results_file_fifty:
 		pickle.dump(results_fifty, results_file_fifty)

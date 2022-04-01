@@ -34,8 +34,8 @@ def Cross_Subject(X_main, Y_main, X_other, Y_other, num_classes, class_weights, 
 	batch_size = train_config['batch_size'], class_weight = class_weights, callbacks = [es], verbose = 1)
 	model.save_weights(weights_initial)
 
-	ztp += model.predict(X_main).tolist()
-	ztl += Y_main.tolist()
+	ztp.append(model.predict(X_main).tolist())
+	ztl.append(Y_main.tolist())
 	
 	ztr = results(ztp, ztl, [], model_config, train_config)
 
@@ -62,13 +62,12 @@ def Cross_Subject(X_main, Y_main, X_other, Y_other, num_classes, class_weights, 
 			fold_predictions = model.predict(X_test)
 
 			# saves the predictions
-			indices += X_test.tolist()
-			predictions += fold_predictions.tolist()
-			labels += y_test.tolist()
+			indices.append(X_test.tolist())
+			predictions.append(fold_predictions.tolist())
+			labels.append(y_test.tolist())
 
 	r = results(predictions, labels, indices, model_config, train_config)
 	return ztr, r
-
 
 
 if __name__ == '__main__':
@@ -107,7 +106,7 @@ if __name__ == '__main__':
 	Y_other = np.array(Y_other)
 
 	############## Collects the results ##############
-	weights_initial_path = './checkpoints/CSWD_initial_checkpoint'
+	weights_initial_path = f'./checkpoints/{competition}_{subject}_CSWD_initial_checkpoint'
 	results_zero, results_fifty = Cross_Subject(X_main, Y_main, X_other, Y_other, num_classes, 
 	class_weights, weights_initial_path, model_config, train_config)
 
@@ -121,5 +120,5 @@ if __name__ == '__main__':
 	with open(f'{results_path}/results_zero_{config_label}.pk1', 'wb') as results_file_zero:
 		pickle.dump(results_zero, results_file_zero)
 
-	with open(f'{results_path}/results_fifty{config_label}.pk1', 'wb') as results_file_fifty:
+	with open(f'{results_path}/results_fifty_{config_label}.pk1', 'wb') as results_file_fifty:
 		pickle.dump(results_fifty, results_file_fifty)
