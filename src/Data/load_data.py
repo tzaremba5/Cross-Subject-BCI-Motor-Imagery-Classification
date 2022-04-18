@@ -15,21 +15,25 @@ import scipy.io
 import numpy as np
 from dataset_descriptions import *
 
-
-# preprocess_pipeline
-#
-# Preprocesses the EEG data by
-# - picking the 21 common channels
-# - downsamples to 250 Hz
-# - common average referencing
-# - surface laplacian
-# - bandpass filter (0.5 - 100 Hz)
-# - segment the data into epochs
-#
-# Input: MNE Raw Object
-# Output: MNE Epochs Object g
-#
 def preprocess_pipeline(raw_EEG, event_dict):
+    """ Preprocesses the EEG data by 
+        - picking the 21 common channels
+        - downsamples to 250 Hz
+        - common average referencing
+        - surface laplacian
+        - bandpass filter (0.5 - 100 Hz)
+        - segment the data into epochs
+
+    Args: 
+        - MNE Raw Object containing the unsegmented EEG data
+        - Dictionary containing the labels for each segement
+
+    Returns:
+        - MNE Epochs Object containing the segmented EEG data
+
+    Exception:
+        None
+     """
 
     # Picks 21 Common Channels
     raw_EEG.pick_channels([
@@ -68,14 +72,20 @@ def preprocess_pipeline(raw_EEG, event_dict):
 
     return epochs
 
-
-# load_BCI_Competition_IV_Dataset_IIa
-#
-# Loads in the data, prepreprocesses and saves it to out_path
-# Input: IV_IIa_path, out_path
-# Output: None
-#
 def load_BCI_Competition_IV_Dataset_IIa(IV_IIa_path, out_path_dir):
+    """ Loads in the data from IV_IIa, prepreprocesses and saves it to out_path
+
+    Args: 
+        - String denoting IV_IIa
+        - String denoting outpath to save the epochs
+
+    Returns:
+        None
+
+    Exception:
+        None
+     """
+
     # Makes the directory to store the epochs
     try:
         os.makedirs(out_path_dir)
@@ -146,14 +156,21 @@ def load_BCI_Competition_IV_Dataset_IIa(IV_IIa_path, out_path_dir):
         out_path_subject = f'{out_path_dir}/{subject}.fif'
         epochs.save(fname=out_path_subject, overwrite=True)
 
-
-# load_BCI_Competition_IV_Dataset_I
-#
-# Loads in the data, prepreprocesses and saves it to out_path
-# Input: IV_I_path, out_path
-# Output: None
-#
 def load_BCI_Competition_IV_Dataset_I(IV_I_path, out_path_dir):
+    """ Loads in the data from IV_I, prepreprocesses and saves it to out_path
+
+    Args: 
+        - String denoting IV_I
+        - String denoting outpath to save the epochs
+
+    Returns:
+        None
+
+    Exception:
+        None
+     """
+
+
     # Makes the directory to store the epochs
     try:
         os.makedirs(out_path_dir)
@@ -221,14 +238,20 @@ def load_BCI_Competition_IV_Dataset_I(IV_I_path, out_path_dir):
         out_path_subject = f'{out_path_dir}/{subject}.fif'
         epochs.save(fname=out_path_subject, overwrite=True)
 
-
-# load_BCI_Competition_IV_Dataset_IIa
-#
-# Loads in the data, prepreprocesses and saves it to out_path
-# Input: III_IVa_path, out_path
-# Output: None
-#
 def load_BCI_Competition_III_Dataset_IVa(III_IVa_path, out_path_dir):
+    """ Loads in the data from III_IVa, prepreprocesses and saves it to out_path
+
+    Args: 
+        - String denoting III_IVa
+        - String denoting outpath to save the epochs
+
+    Returns:
+        None
+
+    Exception:
+        None
+     """
+
     # Makes the directory to store the epochs
     try:
         os.makedirs(out_path_dir)
@@ -267,7 +290,6 @@ def load_BCI_Competition_III_Dataset_IVa(III_IVa_path, out_path_dir):
         # Saves the epochs
         out_path_subject = f'{out_path_dir}/{subject}.fif'
         epochs.save(fname=out_path_subject, overwrite=True)
-
 
 if __name__ == '__main__':
 

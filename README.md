@@ -33,9 +33,24 @@ The source code in src contains the following
 
 -------
 ## Usage
-- Run the command 'make setup' to download the required libraries
-- Download both the training and the evaluation data from the above links and put it into three seperate in their corresponding competition.  
-- Run the command
+1. Download both the training and the evaluation data from the above links and put it into three seperate in their corresponding competition. Set the path of these folders as IV_IIa, IV_I, III_IVa or change the paths names in the makefile. DO NOT CHANGE THE NAMES OF THE SUBJECT FOLDERS.
+
+2. Run to download the necessary libraries
+```bash
+$ make setup
+```
+
+3. Run to generate the epochs 
+```bash
+$ make load-data-all
+```
+
+4. Run to generate the STFT features
+```bash
+$ make build-features-all
+```
+
+5. 
 
 -------
 ## Legal Disclaimer
