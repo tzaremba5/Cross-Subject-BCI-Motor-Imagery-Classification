@@ -65,6 +65,7 @@ run-single-trial-all:
 
 	-rm -r checkpoints
 
+
 run-cswd-all: 
 	python3 Experiments/CSWD.py IV_IIa A01 ${MODEL_CONFIGURATION} ${TRAIN_CONFIGURATION} ${CONFIG_LABEL}
 	python3 Experiments/CSWD.py IV_IIa A02 ${MODEL_CONFIGURATION} ${TRAIN_CONFIGURATION} ${CONFIG_LABEL}

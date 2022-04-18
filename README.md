@@ -33,7 +33,9 @@ The source code in src contains the following
 
 -------
 ## Usage
-
+- Run the command 'make setup' to download the required libraries
+- Download both the training and the evaluation data from the above links and put it into three seperate in their corresponding competition.  
+- Run the command
 
 -------
 ## Legal Disclaimer
