@@ -20,8 +20,9 @@ The source code in src contains the following
 
 -------
 ## Experiment Layout Overview
-<img src="assets/Method Pipeline.png" width="500">
-
+<p align="center">
+<img src="assets/Method Pipeline.png" height="150">
+p>
 
 -------
 ## Requirements
