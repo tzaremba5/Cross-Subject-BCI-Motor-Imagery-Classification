@@ -19,11 +19,8 @@ The source code in src contains the following
 
 
 -------
-## Feature Generation
-
-
--------
-## Model
+## Experiment Layout Overview
+<img src="assets/Method Pipeline.png" width="500">
 
 
 -------
