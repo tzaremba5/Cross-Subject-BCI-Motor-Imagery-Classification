@@ -6,7 +6,6 @@ In this paper, we propose a method of assimilating all the subject's data across
 The source code in src contains the following
 - Data: scripts for loading the data and generating the STFT features
 - Experiments: scripts for running and analyzing the single-trial, CSCD, and CSWD experiments
-- Model: scripts containing the model and model optimization
 
 -------
 ## Datasets
@@ -33,7 +32,7 @@ The source code in src contains the following
 
 -------
 ## Usage
-1. Download both the training and the evaluation data from the above links and put it into three seperate in their corresponding competition. Set the path of these folders as IV_IIa, IV_I, III_IVa or change the paths names in the makefile. DO NOT CHANGE THE NAMES OF THE SUBJECT FOLDERS.
+1. Download both the training and the evaluation data from the above links and put it into three seperate in their corresponding competition. Set the path of these folders as IV_IIa, IV_I, III_IVa or change the paths names in the makefile. WARNING: Do not change the names of the subject folders.
 
 2. Run to download the necessary libraries
 ```bash
@@ -50,7 +49,22 @@ $ make load-data-all
 $ make build-features-all
 ```
 
-5. 
+5. Run the single-trial experiments
+```bash
+$ make run-single-trial-all
+```
+
+6. Run the CSWD experiments
+```bash
+$ make run-cswd-all
+```
+
+7. Run the CSCD experiments
+```bash
+$ make run-cscd-all
+```
+
 
 -------
-## Legal Disclaimer
+## Accessing the results
+
