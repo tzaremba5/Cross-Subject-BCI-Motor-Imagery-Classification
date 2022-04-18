@@ -21,7 +21,7 @@ The source code in src contains the following
 -------
 ## Experiment Layout Overview
 <p align="center">
-<img src="assets/Method Pipeline.png" height="150">
+<img src="assets/Method Pipeline.png" height="600">
 p>
 
 -------
