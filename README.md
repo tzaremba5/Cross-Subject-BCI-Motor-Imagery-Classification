@@ -32,7 +32,9 @@ The source code in src contains the following
 
 -------
 ## Usage
-1. Download both the training and the evaluation data from the above links and put it into three seperate in their corresponding competition. Set the path of these folders as IV_IIa, IV_I, III_IVa or change the paths names in the makefile. WARNING: Do not change the names of the subject folders.
+1. Download both the training and the evaluation data from the above links and put it into three seperate in their corresponding competition. Set the path of these folders as IV_IIa, IV_I, III_IVa or change the paths names in the makefile. 
+
+WARNING: Do not change the names of the subject folders.
 
 2. Run to download the necessary libraries
 ```bash
@@ -64,7 +66,17 @@ $ make run-cswd-all
 $ make run-cscd-all
 ```
 
+Optional steps:
+Change the hyperparameters saved in ./Experiments/Configurations json files
+
+Tune the model's hyperparameters
+```bash
+$ make run-tune-model
+```
 
 -------
 ## Accessing the results
-
+Calculate the accuracy and std error for all the experiments and save them to src as a csv for each experiment
+```bash
+$ make display-results
+```
