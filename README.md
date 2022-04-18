@@ -67,6 +67,7 @@ $ make run-cscd-all
 ```
 
 Optional steps:
+
 Change the hyperparameters saved in ./Experiments/Configurations json files
 
 Tune the model's hyperparameters
