@@ -35,7 +35,7 @@ All of the scripts are run using python3 and the following dependencies and vers
 
 -------
 ## Usage
-1. Download both the training and the evaluation data from the above links and put it into three seperate in their corresponding competition. Set the path of these folders as IV_IIa, IV_I, III_IVa or change the paths names in the makefile. 
+1. Download both the training and the evaluation data from the above links and put it into three seperate in their corresponding competition. Put these folders in src and cd into src. Set the path of these folders as IV_IIa, IV_I, III_IVa or change the paths names in the makefile.
 
 WARNING: Do not change the names of the subject folders.
 
