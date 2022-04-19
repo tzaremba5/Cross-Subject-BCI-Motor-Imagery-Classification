@@ -39,7 +39,7 @@ All of the scripts are run using python3 and the following dependencies and vers
 
 WARNING: Do not change the names of the subject folders.
 
-2. Run to download the necessary libraries
+2. Run to download the necessary dependencies
 ```bash
 $ make setup
 ```
