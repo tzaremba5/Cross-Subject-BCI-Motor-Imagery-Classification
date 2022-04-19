@@ -11,16 +11,41 @@ import pandas as pd
 import pickle
 
 
-# load_results
-#
-#
 def load_results(results_path):
+    """ Loads the results and gets the accuracy and std error
+
+    Args: 
+        - results_path
+        Returns:
+        - accuracy: accuracy for the results
+        - std_error: std error for the results
+
+    Returns:
+        - accuracy
+        - std_error
+
+    Exception:
+        None
+    """
+
     with open(results_path, 'rb') as infile:
         results = pickle.load(infile)
     return results.accuracy, results.std_error
 
 
 def avg_real(scores):
+    """ Calculates the average for accuracy or std error without 'none'
+
+    Args: 
+        - scores: list of accuracy or std errors
+    
+    Returns:
+        - Avg if list is nonempty and real
+    
+    Exception:
+        None
+    """
+
     scores_no_none = [x for x in scores if x != None]
     if len(scores_no_none) == 0:
         return None
@@ -31,7 +56,7 @@ def avg_real(scores):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Display Results')
 
-    ############## Gets the config label ##############
+    # Gets the config label
     parser.add_argument(
         'Config_Label',
         nargs=1,
@@ -43,7 +68,7 @@ if __name__ == '__main__':
     results_path_CSWD = './CSWD_results'
     results_path_CSCD = './CSCD_results'
 
-    ############## Iterates through all of the subjects and makes a csv of their results ##############
+    # Iterates through all of the subjects and makes a csv of their results
     Accuracies_Single_Trial = []
     Errors_Single_Trial = []
 
@@ -134,7 +159,7 @@ if __name__ == '__main__':
 
     labels.append('Average')
 
-    ############## Makes the dataframe for single trial ##############
+    # Makes the dataframe for single trial
     Accuracies_Single_Trial.append(avg_real(Accuracies_Single_Trial))
     Errors_Single_Trial.append(avg_real(Errors_Single_Trial))
 
@@ -146,7 +171,7 @@ if __name__ == '__main__':
     df = pd.DataFrame.from_dict(dict_single_trial)
     df.to_csv('./single-trial_results/Single_Trial_Results.csv')
 
-    ############## Makes the dataframe for CSWD ##############
+    # Makes the dataframe for CSWD
     Accuracies_CSWD_0.append(avg_real(Accuracies_CSWD_0))
     Errors_CSWD_0.append(avg_real(Errors_CSWD_0))
     Accuracies_CSWD_50.append(avg_real(Accuracies_CSWD_50))
@@ -162,7 +187,7 @@ if __name__ == '__main__':
     df = pd.DataFrame.from_dict(dict_CSWD)
     df.to_csv('./CSWD_results/CSWD_Results.csv')
 
-    ############## Makes the dataframe for CSCD ##############
+    # Makes the dataframe for CSCD
     Accuracies_CSCD_0.append(avg_real(Accuracies_CSCD_0))
     Errors_CSCD_0.append(avg_real(Errors_CSCD_0))
     Accuracies_CSCD_50.append(avg_real(Accuracies_CSCD_50))

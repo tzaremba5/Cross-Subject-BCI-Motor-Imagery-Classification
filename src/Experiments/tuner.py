@@ -16,16 +16,24 @@ import keras
 
 from sklearn import model_selection
 
-num_classes = -1
+NUM_CLASSES = -1
 
-
-# CVTuner
-#
-# Tests a given set of hyperparameters against a 5-fold cross validatioon
-#
 class CVTuner(kt.engine.tuner.Tuner):
-
     def run_trial(self, trial, x, y, batch_size=4, epochs=500):
+        """ Tunes the model on a 5 fold cross validation
+
+        Args: 
+            - x: np array containing samples
+            - y: labels
+            - batch_size: batch_size
+            - epochs: number of epochs to run
+
+        Returns:
+            - None
+
+        Exception:
+            None
+        """
         es = keras.callbacks.EarlyStopping(monitor='val_loss',
                                            mode='min',
                                            verbose=1,
@@ -49,10 +57,19 @@ class CVTuner(kt.engine.tuner.Tuner):
 
         self.oracle.update_trial(trial.trial_id,
                                  {'val_accuracy': np.mean(val_accuracies)})
-        # self.save_model(trial.trial_id, model)
-
 
 def model_builder(hp):
+    """ Builds the model and sets the hyperparameter ranges
+
+    Args: 
+        - hp: keras.tuner.CVTuner object
+
+    Returns:
+        - model
+
+    Exception:
+        None
+    """
 
     ############## Sets the parameters to be tuned ##############
     hp_f1 = hp.Int('Filter_1', min_value=1, max_value=10, step=1)
@@ -124,7 +141,7 @@ if __name__ == '__main__':
     tuner.search(X, Y, batch_size=50, epochs=1)
     best_model = tuner.get_best_hyperparameters(num_trials=1)[0].get_config()
 
-    ############## Saves the best hyperparameters ##############
+    # Saves the best hyperparameters
     best_model_hp = best_model['values']
 
     with open(f'./tuner_results/{competition}_{subject}_best_model.json',

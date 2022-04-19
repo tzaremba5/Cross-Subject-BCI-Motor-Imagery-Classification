@@ -20,10 +20,10 @@ def STFT_stacked(epochs):
     """ Creates all the STFT representations of epoched EEG data
 
     Args: 
-        A numpy array where the shape is (# epochs, # channels, (epoch duration * samples_rate))
+        - epochs: np array where the shape is (# epochs, # channels, (epoch duration * samples_rate))
 
     Returns:
-        A list of numpy arrays where each array is the STFT representation of the epoch
+        - samples: a list of numpy arrays where each array is the STFT representation of the epoch
 
     Exception:
         None

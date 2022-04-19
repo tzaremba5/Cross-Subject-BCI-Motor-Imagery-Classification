@@ -11,19 +11,24 @@ import scipy
 from sklearn.metrics import accuracy_score
 import numpy as np
 
-
-# results
-#
-# This class holds the predictions across all the folds for each experiment
-# and functions that will analyze the predictions
-#
-# It also allows the user to display the results as a csv for all the subjects
-# for a given config label
-#
 class results():
-
     def __init__(self, predictions, labels, indices, model_config,
                  train_config):
+        """ Instantiates the results object
+
+        Args:
+            predictions: np array of the predictions
+            labels: np array of the labels
+            indices: np array of the indicies of the samples
+            model_config: dictionary containing the model config
+            train_config: dictionary containing the training config
+
+        Returns:
+            - self: Results object
+
+        Exception:
+            None
+        """
         self.__predictions = predictions
         self.__labels = labels
         self.__indices = indices

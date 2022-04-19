@@ -17,12 +17,29 @@ from model import *
 from dataset_descriptions import *
 from create_datasets import *
 
-
-# Cross_Subject
-#
-#
 def Cross_Subject(X_main, Y_main, X_other, Y_other, num_classes, class_weights,
                   weights_initial, model_config, train_config):
+    """ Runs the cross subject experiments by pretraining on X_other and then training on X_main
+
+    Args: 
+        X_main: np array containing samples for the main subject
+        Y_main: labels for main subject
+        X_other: np array containing samples for the other subjects
+        Y_other: labels for the other subjects data
+        num_classes: int 
+        class_weights: dictionary containing class weights
+        weights_initial: initial weights path
+        model_config: dictionary with hyperparameters for the model
+        train_config: dictionary with hyperparameters for training
+
+    Returns:
+        - ztr: results object for zero trial results
+        - r: results object for the 50% trial
+
+    Exception:
+        None
+     """
+
     es = keras.callbacks.EarlyStopping(monitor='val_loss',
                                        mode='min',
                                        verbose=1,

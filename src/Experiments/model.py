@@ -1,7 +1,7 @@
 ################################################################################
 # model.py
 #
-# Stores the model that all the experiments are run on
+# Stores the model that all the experiments run on
 #
 
 from tensorflow.keras import Model
@@ -10,14 +10,32 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.optimizers import deserialize
 
 
-# model
-#
-# Creates and returns the model to classify the STFT features
-#
-# Input: All hyperparameters
-# Output: Compiled model
 def STFTModel(num_classes, f1, k1, a1, p1, f2, k2, a2, units1, r1, a3, o1, l1,
               m1):
+    """ Creates the model to classify the STFT features
+
+    Args: 
+        num_classes: int
+        f1: filter size 1
+        k1: kernel size 1 
+        a1: activation 1
+        p1: padding 1
+        f2: filter size 2
+        k2: kernel 
+        a2: activation 2
+        units1: dense units 1
+        r1: dropout rate 1
+        a3: activation 3
+        o1: optimizer
+        l1: loss function
+        m1: metrics to optimize for
+
+    Returns:
+        - model: compiled tf.keras.model object
+
+    Exception:
+        None
+     """
     input1 = Input(shape=(540, 26, 1))
 
     #########################################

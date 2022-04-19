@@ -6,15 +6,21 @@
 
 from single_trial import *
 
-# create_dataset
-#
-# Creates the dataset for a given subject
-# - competition
-# - subject
-#
-# Output: Numpy array shape (n_samples, sample_size)
-# 
 def create_dataset(competition, subject, tasks = None):
+    """ Creates the dataset for a given subject
+
+    Args: 
+        - competition: string
+        - subject: string
+        - tasks: string denoting which task to load
+
+    Returns:
+        - X: list of STFT representations
+        - Y: labels
+
+    Exception:
+        None
+     """
 
     # If the tasks aren't specificed then it gathers all the tasks for that subject
     if tasks == None:
@@ -36,25 +42,35 @@ def create_dataset(competition, subject, tasks = None):
 
     return X, Y, num_classes
 
-# create_dataset_CSWD
-#
-# FInds the other subjects that have the same tasks within that subject's dataset
-# and adds those tasks to X_other and the labels associated with those subjects to Y_other
-# also returns the class weights in case X_other is not symmetric
-#
-def create_dataset_CSWD(competition, subject):
 
-    ##############
+def create_dataset_CSWD(competition, subject):
+    """ Creates the main and pretraining datasets for a given subject under the CSWD paradigm
+
+    Args: 
+        - competition: string denoting the main competition
+        - subject: string denoting the main subject
+
+    Returns:
+        - X_main: list of STFT samples for the main subject
+        - Y_main: labels for main subject's data
+        - X_other: list of STFT samples for the other subject
+        - Y_other: labels for other subjects
+        - num_classes: number of classes
+        - class_weights: class weights for the pretraining dataset
+
+    Exception:
+        None
+     """
+
     tasks = competitions[competition][subject].keys()
     num_classes = len(tasks)
 
-    ##############
     X_main = []
     Y_main = []
     X_other = []
     Y_other = []
 
-    ############## Fills the main and other datsets ##############
+    # Fills the main and other datsets
     class_number = 0
     for task in tasks:
         for other_subject in competitions[competition][task]:                
@@ -69,32 +85,42 @@ def create_dataset_CSWD(competition, subject):
 
         class_number += 1
 
-    ############## Finds the weights for the classes of the other subjects ##############
+    # Finds the weights for the classes of the other subjects
     class_weights = {}
     for class_number in range(num_classes):
         class_weights[class_number] = len(Y_other) / Y_other.count(class_number)
 
     return X_main, Y_main, X_other, Y_other, num_classes, class_weights
 
-# create_dataset_CSCD
-#
-# FInds the other subjects that have the same tasks across all three datasets 
-# and adds those tasks to X_other and the labels associated with those subjects to 
-# Y_other and also returns the class weights in case X_other is not symmetric
-#
-def create_dataset_CSCD(competition, subject):
 
-    ##############
+def create_dataset_CSCD(competition, subject):
+    """ Creates the main and pretraining datasets for a given subject under the CSCD paradigm
+
+    Args: 
+        - competition: string denoting the main competition
+        - subject: string denoting the main subject
+
+    Returns:
+        - X_main: list of STFT samples for the main subject
+        - Y_main: labels for main subject's data
+        - X_other: list of STFT samples for the other subject
+        - Y_other: labels for other subjects
+        - num_classes: number of classes
+        - class_weights: class weights for the pretraining dataset
+
+    Exception:
+        None
+     """
+
     tasks = competitions[competition][subject].keys()
     num_classes = len(tasks)
 
-    ##############
     X_main = []
     Y_main = []
     X_other = []
     Y_other = []
 
-    ############## Fills the main and other datsets ##############
+    # Fills the main and other datsets
     class_number = 0
     for task in tasks:
         for other_competition in competition_names:
@@ -110,7 +136,7 @@ def create_dataset_CSCD(competition, subject):
 
         class_number += 1
 
-    ############## Finds the weights for the classes of the other subjects ##############
+    # Finds the weights for the classes of the other subjects
     class_weights = {}
     for class_number in range(num_classes):
         class_weights[class_number] = len(Y_other) / Y_other.count(class_number)

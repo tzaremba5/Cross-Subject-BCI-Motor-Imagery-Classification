@@ -21,7 +21,7 @@ from create_datasets import *
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='CSWD')
 
-    ############## Gets the arguments to pick the subject ##############
+    # Gets the arguments to pick the subject
     parser.add_argument('Competition',
                         nargs=1,
                         help='BCI Competition (IV_IIa, IV_I, III_IVa')
@@ -59,7 +59,7 @@ if __name__ == '__main__':
     assert subject in competitions[competition][
         'subjects'], "Enter a subject id from the given competition"
 
-    ############## Creates the datasets ##############
+    # Creates the datasets
     X_main, Y_main, X_other, Y_other, num_classes, class_weights = create_dataset_CSCD(
         competition, subject)
     X_main = np.array(X_main)
@@ -67,7 +67,7 @@ if __name__ == '__main__':
     X_other = np.array(X_other)
     Y_other = np.array(Y_other)
 
-    ############## Collects the results ##############
+    # Collects the results
     weights_initial_path = f'./checkpoints/{competition}_{subject}_CSCD_initial_checkpoint'
     results_zero, results_fifty = Cross_Subject(X_main, Y_main, X_other,
                                                 Y_other, num_classes,
@@ -75,7 +75,7 @@ if __name__ == '__main__':
                                                 weights_initial_path,
                                                 model_config, train_config)
 
-    ############## Saves the results ##############
+    # Saves the results 
     results_path = f'./CSCD_results/{competition}/{subject}'
     try:
         os.makedirs(results_path)

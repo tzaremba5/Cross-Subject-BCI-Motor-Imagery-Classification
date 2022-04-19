@@ -76,8 +76,8 @@ def load_BCI_Competition_IV_Dataset_IIa(IV_IIa_path, out_path_dir):
     """ Loads in the data from IV_IIa, prepreprocesses and saves it to out_path
 
     Args: 
-        - String denoting IV_IIa
-        - String denoting outpath to save the epochs
+        - IV_IIa_path: string denoting IV_IIa
+        - out_path_dir: String denoting outpath to save the epochs
 
     Returns:
         None
@@ -160,8 +160,8 @@ def load_BCI_Competition_IV_Dataset_I(IV_I_path, out_path_dir):
     """ Loads in the data from IV_I, prepreprocesses and saves it to out_path
 
     Args: 
-        - String denoting IV_I
-        - String denoting outpath to save the epochs
+        - IV_I_path: string denoting IV_I
+        - out_path_dir: string denoting outpath to save the epochs
 
     Returns:
         None
@@ -169,7 +169,6 @@ def load_BCI_Competition_IV_Dataset_I(IV_I_path, out_path_dir):
     Exception:
         None
      """
-
 
     # Makes the directory to store the epochs
     try:
@@ -242,8 +241,8 @@ def load_BCI_Competition_III_Dataset_IVa(III_IVa_path, out_path_dir):
     """ Loads in the data from III_IVa, prepreprocesses and saves it to out_path
 
     Args: 
-        - String denoting III_IVa
-        - String denoting outpath to save the epochs
+        - III_IVa_path: string denoting III_IVa
+        - out_path_dir: string denoting outpath to save the epochs
 
     Returns:
         None

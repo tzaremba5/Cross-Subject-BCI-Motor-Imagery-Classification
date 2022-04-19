@@ -18,12 +18,25 @@ from dataset_descriptions import *
 from create_datasets import *
 
 
-# single_trial
-#
-# Runs 3 iterations of a 5-fold cross validation for each subject
-#
 def single_trial(X, Y, num_classes, model_config, train_config,
                  weights_initial_path):
+    """ Runs the single trial experiment for a given subject and returns the results
+
+    Args: 
+        - X: np array containing samples
+        - Y: labels
+        - num_classes: int
+        - model_config: dictionary with hyperparameters for the model
+        - train_config: dictionary with hyperparameters for training
+        - weights_initial_path: initial weights path
+
+    Returns:
+        - r
+
+    Exception:
+        None
+     """
+
     es = keras.callbacks.EarlyStopping(monitor='val_loss',
                                        mode='min',
                                        verbose=1,
