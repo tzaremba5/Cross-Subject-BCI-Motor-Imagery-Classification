@@ -19,14 +19,19 @@ The source code in src contains the following
 
 
 -------
-## Experiment Layout Overview
-<p align="center">
-<img src="assets/Method Pipeline.png" height="600">
-p>
-
--------
 ## Requirements
+All of the scripts are run using python3 and the following dependencies and versions are recomended. 
 
+- mne 1.0.0
+- scipy 1.7.0
+- tensorflow 2.8.0
+- scikit-learn 1.0.2
+- keras 2.8.0
+- keras-tuner 1.1.2
+- numpy 1.22.3
+- pickleshare 0.7.5
+- argcomplete 1.12.0
+- pandas 1.4.1
 
 -------
 ## Usage
